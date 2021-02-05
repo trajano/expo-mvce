@@ -47,11 +47,13 @@ const registerTask = async (executor: TaskManager.TaskManagerTaskExecutor) => {
 
 const requestNeededPermissionsAsync = async () => {
     await Notifications.requestPermissionsAsync({
+        android: {},
         ios: {
             allowAlert: true,
             allowBadge: true,
             allowSound: true,
             allowAnnouncements: true,
+            provideAppNotificationSettings: true,
         },
     });
 }

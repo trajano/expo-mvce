@@ -21,6 +21,7 @@
       "infoPlist": {
         "UIBackgroundModes": [
           "fetch",
+          "location",
           "remote-notification",
           "processing"
         ]
