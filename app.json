@@ -20,7 +20,9 @@
       "supportsTablet": true,
       "infoPlist": {
         "UIBackgroundModes": [
-          "fetch"
+          "fetch",
+          "remote-notification",
+          "processing"
         ]
       }
     },
