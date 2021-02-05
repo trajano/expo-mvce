@@ -19,11 +19,13 @@ export default function App() {
 
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermissionsStatus>();
   const [backgroundStatus, setBackgroundStatus] = useState<BackgroundFetchStatus | null>();
+  const [registeredTasks, setRegisteredTasks] = useState<TaskManager.TaskManagerTask[] | null>();
 
   const checkStatusAsync = async () => {
     setBackgroundStatus(await BackgroundFetch.getStatusAsync());
     setRunning(await TaskManager.isTaskRegisteredAsync(BACKGROUND_FETCH_TASK));
     setNotificationPermission(await getPermissionsAsync());
+    setRegisteredTasks(await TaskManager.getRegisteredTasksAsync())
   };
 
   const handleToggle = async () => {
@@ -37,6 +39,7 @@ export default function App() {
       })
     }
     setRunning(!isRunning);
+    checkStatusAsync();
   }
 
   const handleNotifyMe = async () => {
@@ -77,6 +80,28 @@ export default function App() {
     }
   }
 
+  const renderRegisteredTasks = () => {
+    if (!registeredTasks) {
+      return null;
+    }
+    const content: JSX.Element[] = [];
+
+    registeredTasks
+      .map(registeredTask => <Text key={registeredTask.taskName}>{JSON.stringify(registeredTask)}</Text>)
+      .forEach(jsx => content.push(jsx))
+
+    return (
+      <View style={styles.textContainer}>
+        <Text style={styles.boldText}>
+          Registered Tasks
+       </Text>
+        <View>
+          {content}
+        </View>
+      </View>
+    );
+  }
+
   useEffect(() => {
     AppState.addEventListener("change", handleAppStateChange);
     return () => {
@@ -109,10 +134,13 @@ export default function App() {
       </View>
       <View style={styles.textContainer}>{renderText()}</View>
       <Button
-        title={isRunning ? 'Unregister BackgroundFetch task' : 'Register BackgroundFetch task'}
+        title={isRunning ? 'Unregister BackgroundFetch' : 'Register BackgroundFetch'}
         onPress={handleToggle}
       />
+
       <Button title="Notify Me" onPress={handleNotifyMe} />
+
+      {renderRegisteredTasks()}
 
       <StatusBar style="auto" />
     </View>

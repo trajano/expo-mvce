@@ -24,7 +24,8 @@
           "remote-notification",
           "processing"
         ]
-      }
+      },
+      "bundleIdentifier": "com.trajano.background-fetch-mcve"
     },
     "android": {
       "adaptiveIcon": {
